@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solar Display</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0b0e13;
+      --surface: #13171f;
+      --border:  rgba(255,255,255,0.07);
+      --accent:  #f0a500;
+      --accent2: #00c2a8;
+      --muted:   rgba(255,255,255,0.3);
+      --radius:  12px;
+    }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      gap: 20px;
+      font-family: 'Syne', sans-serif;
+    }
+
+    header {
+      width: 100%;
+      max-width: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent2);
+      box-shadow: 0 0 8px var(--accent2);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    /* ┌─────────────────────────────────────────────┐
+       │  SHARED SETTINGS                            │
+       │  max-width applies to both crop windows     │
+       └─────────────────────────────────────────────┘ */
+    .crop-wrapper {
+      width: 100%;
+      max-width: 700px;        /* ← overall page width (both sections) */
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    }
+
+    iframe {
+      position: absolute;
+      border: none;
+      pointer-events: none;
+      width: 1280px;           /* ← assumed full width of Solarweb page — don't change */
+      height: 1400px;          /* ← assumed full height of Solarweb page — don't change */
+    }
+
+    /* ┌─────────────────────────────────────────────┐
+       │  SECTION 1 — Energy Stream (top)            │
+       └─────────────────────────────────────────────┘ */
+    #section1 {
+      height: 400px;           /* ← HEIGHT of section 1 crop window */
+    }
+
+    #section1 iframe {
+      top:  -300px;             /* ← shift UP:    increase to move view further down */
+      left: -60px;             /* ← shift LEFT:  increase to move view further right */
+    }
+
+    /* ┌─────────────────────────────────────────────┐
+       │  SECTION 2 — Second plot (bottom)           │
+       └─────────────────────────────────────────────┘ */
+    #section2 {
+      height: 400px;           /* ← HEIGHT of section 2 crop window */
+      margin-top: 6px;        /* ← gap between section 1 and section 2 */
+    }
+
+    #section2 iframe {
+      top:  -300px;            /* ← shift UP:    increase to move view further down */
+      left: -400px;             /* ← shift LEFT:  increase to move view further right */
+    }
+
+    footer {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">☀ Solar Display</div>
+    <div class="status">
+      <div class="status-dot"></div>
+      live
+    </div>
+  </header>
+
+  <!-- Section 1: Energy Stream -->
+  <div class="crop-wrapper" id="section1">
+    <iframe
+      src="https://www.solarweb.com/PublicDisplay/PvSystem?token=32b1d1bd-0d86-4c20-8e30-cad8c813e1da"
+      scrolling="no">
+    </iframe>
+  </div>
+
+  <!-- Section 2: Second plot -->
+  <div class="crop-wrapper" id="section2">
+    <iframe
+      src="https://www.solarweb.com/PublicDisplay/PvSystem?token=32b1d1bd-0d86-4c20-8e30-cad8c813e1da"
+      scrolling="no">
+    </iframe>
+  </div>
+
+  <footer>fronius solarweb · energy display</footer>
+
+</body>
+</html>
